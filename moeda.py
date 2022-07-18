@@ -1,39 +1,46 @@
-from webbrowser import get
+
 import requests
 import json
+import PySimpleGUI as sg
 
 
 
-#Função de cotação de moeda
-def get_coin(coin):
-    #Site usado fazer requisição
-    url = 'https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL'
+#Sistema 
 
-    #Fazer requisição
-    r = requests.get(url)
-    j = r.json()
+url = 'https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL'
 
-    #Cotação da moedas
-    #USDBRL 'EURBRL' 'BTCBRL'
-    dolar = j['USDBRL']['bid'][0:4]
-    euro = j['EURBRL']['bid'][0:4]
-    bitcoin = j['BTCBRL']['bid']
-    
-    #Estrutura de codição
-    if coin == 1:
-        print(f'Valor do dolar é {dolar}')
-    elif coin == 2:
-        print(f'Valor do Euro é {euro}')
-    elif coin == 3:
-        print(f'Valor do bitcoin é {bitcoin}')
-    else:
-        print('Moeda não encontrada!')
+#Fazer requisição
+r = requests.get(url)
+j = r.json()
 
-while True:     
-    #Mostra opção
-    print('''
-    [1] Dolar
-    [2] Euro
-    [3] Bitcoin\n''')
-    
-    get_coin(int(input('Digite:')))
+#Cotação da moedas
+#USDBRL 'EURBRL' 'BTCBRL'
+dolar = j['USDBRL']['bid'][0:4]
+euro = j['EURBRL']['bid'][0:4]
+bitcoin = j['BTCBRL']['bid']
+
+
+#Menu
+sg.theme('DarkBrown')
+tela = [
+    [sg.Text('Cotação de moeda')],
+    [sg.Button('Dolar',key='Dolar'),sg.Button('Euro',key='Euro'),sg.Button('Bitcoin',key='Bitcoin')],
+    [sg.Text('',key='resposta')]
+]
+
+
+janela = sg.Window('Sistema de cotação de moeda',tela)
+
+while True:
+    evento,valores = janela.read()
+    if evento == sg.WINDOW_CLOSED:
+        print('Saindo do sistema...')
+        break
+    if evento == 'Dolar':
+        janela['resposta'].update(f'Valor do Dolar é {dolar}')
+    elif evento == 'Euro':
+        janela['resposta'].update(f'Valor do Euro é {euro}')
+    elif evento == 'Bitcoin':
+        janela['resposta'].update(f'Valor do Bitcoin é {bitcoin}')
+
+janela.close()
