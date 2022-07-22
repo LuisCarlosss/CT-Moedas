@@ -29,15 +29,14 @@ tela = [
 ]
 
 
-janela = sg.Window('Sistema de cotação de moeda',tela)
+janela = sg.Window('Sistema de cotação de moeda',tela,size=(200,120))
 
 while True:
     evento,valores = janela.read()
     if evento == sg.WINDOW_CLOSED:
         print('Saindo do sistema...')
         break
-    if evento == 'Dolar':
-        janela['resposta'].update(f'Valor do Dolar é {dolar}')
+    if evento == 'Dolar':janela['resposta'].update(f'Valor do Dolar é {dolar}')
     elif evento == 'Euro':
         janela['resposta'].update(f'Valor do Euro é {euro}')
     elif evento == 'Bitcoin':
